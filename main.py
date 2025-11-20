@@ -1,3 +1,5 @@
+# tengo que arreglar las secciones que tienen que ver con ascensos y descensos (véase la línea 159)
+
 # uvicorn main:app --reload
 
 from fastapi import FastAPI
@@ -31,12 +33,15 @@ def average_stats(league_name: str):
             select(League).where(League.name == league_name)
         ).first()
         teams = session.exec(
-            select(Team).where(Team.country == league.country)
+            select(Teams)
+            .join(Standings, Teams.id == Standings.team_id)
+            .where(Standings.league_id == league.id)
+            .distinct()
         ).all()
         data = []
         for team in teams:
             team_standings = session.exec(
-                select(Standings).where(Standings.team_id == team.id)
+                select(Standings).where(Standings.team_id == team.id, Standings.league_id == league.id)
             ).all()
             n = len(team_standings)
             if league_name in ppm:
@@ -151,7 +156,7 @@ def promotead_teams(league_name: str):
                 teams1 = session.exec(
                     select(Standings.team_id).where(Standings.league_id == league_id, Standings.season == season1)
                 ).all()
-                promoted_teams = list(set(teams1) - set(teams0))
+                promoted_teams = list(set(teams1) - set(teams0)) # en segunda división esto también me devuelve los equipos descendidos de primera
             for team_id in promoted_teams:
                 team = session.exec(
                     select(Team).where(Team.id == team_id)
@@ -202,7 +207,7 @@ def season_standings(league_name: str, season: str):
             select(League.id).where(League.name == league_name)
         ).first() # first() devuelve el contenido de la ejecución
         results = session.exec(
-            select(Standings, Team)
+            select(Standings, Team) # devolverá una lista de duplas
             .join(Team, Standings.team_id == Team.id)
             .where(Standings.league_id == league_id, Standings.season == season)
         ).all()
@@ -224,20 +229,20 @@ def season_standings(league_name: str, season: str):
     return data
 
 @app.get("/team-trajectory")
-def team_trajectory(team_name: str):
+def team_trajectory(league_name, team_name: str):
     with Session(engine) as session:
         team = session.exec(
             select(Team).where(Team.name == team_name)
         ).first()
-        team_league = session.exec(
-            select(League.name).where(League.country == team.country)
+        league = session.exec(
+            select(League).where(League.name == league_name)
         ).first()
         standings = session.exec(
-            select(Standings).where(Standings.team_id == team.id)
-        )
+            select(Standings).where(Standings.team_id == team.id, Standings.league_id == league.id)
+        ).all()
         data = []
         for s in standings:
-            if team_league in ppm:
+            if league.name in ppm:
                 sort_by = "ppm"
                 data.append({
                     "season": s.season,

@@ -287,5 +287,16 @@ def main():
     create_matches_and_teams()
     create_standings()
 
-if __name__ == "__main__":
-    main() # no quiero ejecutar la función main cada vez que se ejecute un archivo en el que importe este
+# if __name__ == "__main__":
+    # main() # no quiero ejecutar la función main cada vez que se ejecute un archivo en el que importe este
+
+with Session(engine) as session:
+    team_ids = set(session.exec(
+        select(Standings.team_id).where(Standings.league_id == 2)
+    ).all())
+    team_names = []
+    for team_id in team_ids:
+        team_names.append(session.exec(
+            select(Team.name).where(Team.id == team_id)
+        ).first())
+    print(team_names)
