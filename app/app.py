@@ -1,8 +1,21 @@
+# ejecutar este archivo crea la base de datos en database.db
+# tarda en ejecutarse un par de minutos
+
 import pandas as pd
+from collections import defaultdict
 from sqlmodel import Session, select
 
-from app.database import create_db_and_tables, engine
-from app.models import League, Match, Standings, Team
+if __name__ == "__main__":
+    from database import create_db_and_tables, engine
+    from models import League, Match, Standings, Team
+else:
+    from app.database import create_db_and_tables, engine
+    from app.models import League, Match, Standings, Team
+
+# una sesión es un objeto que realiza un grupo de operaciones en una base de datos
+# cada vez que quiera añadir datos a la base de datos, tengo que crear una nueva sesión utilizando el engine
+# la sesión debe cerrarse una vez los datos hayan sido añadidos
+# para cerrar la sesión, puedo usar session.close() o puedo realizar las operaciones dentro de un with
 
 seasons = []
 for i in range(25):
@@ -13,59 +26,6 @@ for i in range(25):
     else:
         seasons.append(f"{i}/{i+1}")
 
-def load_dataframe(league, season): # ejemplo: league = SP1, season = 2425
-    url = f"https://www.football-data.co.uk/mmz4281/{season}/{league}.csv"
-    df = pd.read_csv(url, usecols = ["Div", "HomeTeam", "AwayTeam", "FTHG", "FTAG"], on_bad_lines = "warn", encoding = "utf-8")
-    df = df.dropna() # a veces aparecen filas vacías
-    df["FTHG"] = df["FTHG"].astype(int) # a veces los resultados se muestran con ceros decimales
-    df["FTAG"] = df["FTAG"].astype(int)
-    df.insert(1, "Season", season)
-    if len(df) == 380 or len(df) == 279: # el caso 279 corresponde a la temporada 19/20 de la liga francesa
-        n = 10
-    elif len(df) == 306:
-        n = 9
-    df.insert(2, "MW", [i // n + 1 for i in range(len(df))])
-    return df
-
-def head_to_head(teams, season): # teams es una lista con ID de equipos
-    stats = {team: {"points": 0, "goal_difference": 0} for team in teams}
-    with Session(engine) as session:
-        matches = session.exec(
-            select(Match).where(Match.season == season, Match.home_team_id.in_(teams), Match.away_team_id.in_(teams))
-        ).all()
-        for match in matches:
-            home_team = match.home_team_id
-            away_team = match.away_team_id
-            stats[home_team]["goal_difference"] += match.home_goals - match.away_goals
-            stats[away_team]["goal_difference"] += match.away_goals - match.home_goals
-            if match.home_goals > match.away_goals:
-                stats[home_team]["points"] += 3
-            elif match.home_goals < match.away_goals:
-                stats[away_team]["points"] += 3
-            else:
-                stats[home_team]["points"] += 1
-                stats[away_team]["points"] += 1
-    return stats
-
-def tie_breaker(standings, season): # standings es una lista con elementos de la forma (team.id, {"points": 0, "matches_played": 0, ...})
-    i = 0
-    result = []
-    while i < len(standings):
-        tied_teams = [standings[i]]
-        j = i+1
-        while j < len(standings) and standings[i][1]["points"] == standings[j][1]["points"]:
-            tied_teams.append(standings[j])
-            j += 1
-        h2h = head_to_head([x[0] for x in tied_teams], season)
-        tied_teams = sorted(
-            tied_teams,
-            key = lambda x: (h2h[x[0]]["points"], h2h[x[0]]["goal_difference"], x[1]["goal_difference"]),
-            reverse = True,
-        )
-        result += tied_teams
-        i = j
-    return result
-        
 fixed_names = {
     "Alaves": "Alavés", # España
     "Almeria": "Almería",
@@ -114,14 +74,60 @@ fixed_names = {
     "St Etienne": "Saint-Étienne",
 }
 
-# una sesión es un objeto que realiza un grupo de operaciones en una base de datos
-# cada vez que quiera añadir datos a la base de datos, tengo que crear una nueva sesión utilizando el engine
-# la sesión debe cerrarse una vez los datos hayan sido añadidos
-# para cerrar la sesión, puedo usar session.close() o puedo realizar las operaciones dentro de un with
+def load_dataframe(league, season): # ejemplo: league = SP1, season = 2425
+    url = f"https://www.football-data.co.uk/mmz4281/{season}/{league}.csv"
+    df = pd.read_csv(url, usecols = ["Div", "Date", "HomeTeam", "AwayTeam", "FTHG", "FTAG"], on_bad_lines = "warn", encoding = "utf-8")
+    df = df.dropna() # a veces aparecen filas vacías
+    df["FTHG"] = df["FTHG"].astype(int) # a veces los resultados se muestran con ceros decimales
+    df["FTAG"] = df["FTAG"].astype(int)
+    df.insert(1, "Season", season)
+    return df
 
+def head_to_head(teams, season): # teams es una lista con ID de equipos
+    stats = {team: {"points": 0, "goal_difference": 0} for team in teams}
+    with Session(engine) as session:
+        matches = session.exec(
+            select(Match).where(Match.season == season, Match.home_team_id.in_(teams), Match.away_team_id.in_(teams))
+        ).all()
+        for match in matches:
+            home_team = match.home_team_id
+            away_team = match.away_team_id
+            stats[home_team]["goal_difference"] += match.home_goals - match.away_goals
+            stats[away_team]["goal_difference"] += match.away_goals - match.home_goals
+            if match.home_goals > match.away_goals:
+                stats[home_team]["points"] += 3
+            elif match.home_goals < match.away_goals:
+                stats[away_team]["points"] += 3
+            else:
+                stats[home_team]["points"] += 1
+                stats[away_team]["points"] += 1
+    return stats
+
+def tie_breaker(standings, season): # standings es una lista con elementos de la forma (team.id, {"points": 0, "matches_played": 0, ...})
+    i = 0
+    result = []
+    while i < len(standings):
+        tied_teams = [standings[i]]
+        j = i+1
+        while j < len(standings) and standings[i][1]["points"] == standings[j][1]["points"]:
+            tied_teams.append(standings[j])
+            j += 1
+        if len(tied_teams) > 1: 
+            h2h = head_to_head([x[0] for x in tied_teams], season)
+            tied_teams = sorted(
+                tied_teams,
+                key = lambda x: (h2h[x[0]]["points"], h2h[x[0]]["goal_difference"], x[1]["goal_difference"]),
+                reverse = True,
+            )
+        result += tied_teams
+        i = j
+    return result
+        
 def create_matches_and_teams():
     with Session(engine) as session:
-        leagues = session.exec(select(League)).all()
+        leagues = session.exec(
+            select(League)
+        ).all()
         teams_added = {}
         for league in leagues:
             for season in seasons:
@@ -148,7 +154,7 @@ def create_matches_and_teams():
                     match = Match(
                         league = league,
                         season = season,
-                        matchweek = row["MW"],
+                        date = row["Date"],
                         home_team = home_team,
                         away_team = away_team,
                         home_goals = row["FTHG"],

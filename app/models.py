@@ -19,7 +19,7 @@ class Match(SQLModel, table = True):
     id: int | None = Field(default = None, primary_key = True) # puedo crear un Match sin especificar el id y este se establecerá automáticamente al guardar los datos en la base de datos
     league_id: int = Field(foreign_key = "league.id")
     season: str
-    matchweek: int
+    date: str
     home_team_id: int = Field(foreign_key = "team.id")
     away_team_id: int = Field(foreign_key = "team.id")
     home_goals: int

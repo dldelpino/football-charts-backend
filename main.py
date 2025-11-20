@@ -1,11 +1,10 @@
-# ejecutar con uvicorn main:app --reload
+# uvicorn main:app --reload
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlmodel import Session, select
 
-from app.app import seasons, tie_breaker
-from app.database import engine
+from app.app import seasons, tie_breaker, engine
 from app.models import Match, Standings, Team, League
 
 app = FastAPI()
@@ -17,7 +16,7 @@ app.add_middleware( # evita problemas cuando Quasar haga las peticiones
     allow_headers = ["*"],
 )
 
-ppm = ["Serie A", "Ligue 1"] # ligas en las que a veces hay que crear la columna adicional PPM (Points Per Match)
+ppm = ["Serie A", "Ligue 1"] # ligas en las que a veces hay que crear la columna adicional PPM
 
 ################################################################################################################################################################################
 
@@ -31,11 +30,11 @@ def average_stats(league_name: str):
         league = session.exec(
             select(League).where(League.name == league_name)
         ).first()
-        teams_list = session.exec(
+        teams = session.exec(
             select(Team).where(Team.country == league.country)
         ).all()
         data = []
-        for team in teams_list:
+        for team in teams:
             team_standings = session.exec(
                 select(Standings).where(Standings.team_id == team.id)
             ).all()
@@ -71,7 +70,8 @@ def average_stats(league_name: str):
                     "avg_goal_difference": "%.3f" % round(sum(s.goal_difference for s in team_standings) / n, 3),
                     "logo": f"icons/teams/{team.country}/{team.name}.png"
                 })
-    return sorted(data, key = lambda x: x[sort_by], reverse = True)
+    data = sorted(data, key = lambda x: x[sort_by], reverse = True)
+    return data
 
 @app.get("/position-history")
 def position_history(league_name: str, position: int):
@@ -79,45 +79,46 @@ def position_history(league_name: str, position: int):
         league_id = session.exec(
             select(League.id).where(League.name == league_name)
         ).first()
-        results = session.exec(
+        standings = session.exec(
             select(Standings).where(Standings.league_id == league_id, Standings.position == position)
         ).all()
         data = []
-        for standings in results:
+        for s in standings:
             if league_name in ppm:
                 sort_by = "ppm"
                 data.append({
-                    "season": standings.season,
-                    "position": standings.position,
-                    "team": standings.team.name,
-                    "ppm": "%.3f" % round(standings.points/standings.matches_played, 3),
-                    "points": standings.points,
-                    "matches_played": standings.matches_played,
-                    "wins": standings.wins,
-                    "draws": standings.draws,
-                    "losses": standings.losses,
-                    "goals_for": standings.goals_for,
-                    "goals_against": standings.goals_against,
-                    "goal_difference": standings.goal_difference,
-                    "logo": f"icons/teams/{standings.team.country}/{standings.team.name}.png",
+                    "season": s.season,
+                    "position": s.position,
+                    "team": s.team.name,
+                    "ppm": "%.3f" % round(s.points/s.matches_played, 3),
+                    "points": s.points,
+                    "matches_played": s.matches_played,
+                    "wins": s.wins,
+                    "draws": s.draws,
+                    "losses": s.losses,
+                    "goals_for": s.goals_for,
+                    "goals_against": s.goals_against,
+                    "goal_difference": s.goal_difference,
+                    "logo": f"icons/teams/{s.team.country}/{s.team.name}.png",
                 })
             else:
                 sort_by = "points"
                 data.append({
-                    "season": standings.season,
-                    "position": standings.position,
-                    "team": standings.team.name,
-                    "points": standings.points,
-                    "matches_played": standings.matches_played,
-                    "wins": standings.wins,
-                    "draws": standings.draws,
-                    "losses": standings.losses,
-                    "goals_for": standings.goals_for,
-                    "goals_against": standings.goals_against,
-                    "goal_difference": standings.goal_difference,
-                    "logo": f"icons/teams/{standings.team.country}/{standings.team.name}.png",
+                    "season": s.season,
+                    "position": s.position,
+                    "team": s.team.name,
+                    "points": s.points,
+                    "matches_played": s.matches_played,
+                    "wins": s.wins,
+                    "draws": s.draws,
+                    "losses": s.losses,
+                    "goals_for": s.goals_for,
+                    "goals_against": s.goals_against,
+                    "goal_difference": s.goal_difference,
+                    "logo": f"icons/teams/{s.team.country}/{s.team.name}.png",
                 })
-    return sorted(data, key = lambda x: x[sort_by], reverse = True)
+    data = sorted(data, key = lambda x: x[sort_by], reverse = True)
+    return data
 
 @app.get("/promoted-teams")
 def promotead_teams(league_name: str):
@@ -189,14 +190,15 @@ def promotead_teams(league_name: str):
                         "goal_difference": standings.goal_difference,
                         "logo": f"icons/teams/{standings.team.country}/{standings.team.name}.png",
                     })
-    return sorted(data, key = lambda x: (x["season"], -float(x[sort_by]))) # ojito con ese - (tengo que convertir a float porque ppm es un string)
+    data = sorted(data, key = lambda x: (x["season"], -float(x[sort_by]))) # ojito con ese - (tengo que convertir a float porque ppm es un string)
+    return data
 
 @app.get("/season-standings")
 def season_standings(league_name: str, season: str):
     with Session(engine) as session:
         league_id = session.exec(
             select(League.id).where(League.name == league_name)
-            ).first() # first() devuelve el contenido de la ejecución
+        ).first() # first() devuelve el contenido de la ejecución
         results = session.exec(
             select(Standings, Team)
             .join(Team, Standings.team_id == Team.id)
@@ -266,126 +268,84 @@ def team_trajectory(team_name: str):
                     "goal_difference": s.goal_difference,
                     "logo": f"icons/teams/{s.team.country}/{s.team.name}.png",
                 })
-    return sorted(data, key = lambda x: x[sort_by], reverse = True)
+    data = sorted(data, key = lambda x: x[sort_by], reverse = True)
+    return data
 
 @app.get("/threshold-standings")
-def threshold_standings(league_name: str, matchweek: int, points: int):
+def threshold_standings(league_name: str, matches_played: int, threshold: int):
     with Session(engine) as session:
         league = session.exec(
             select(League).where(League.name == league_name)
         ).first()
         data = []
         for season in seasons:
-            matches_played = session.exec(
-                select(Standings.matches_played).where(Standings.league_id == league.id, Standings.season == season)
-            ).first() # partidos jugados por liga y temporada
-            if matches_played >= matchweek: # si por ejemplo league_name = "Serie A" y matchweek = 35, omito las temporadas en las que se jugaban 34 partidos en la Serie A
+            points = {}
+            team_ids = session.exec(
+                select(Standings.team_id).where(Standings.league_id == league.id, Standings.season == season)
+            ).all()
+            for team_id in team_ids:
+                points[team_id] = 0
                 matches = session.exec(
-                    select(Match).where(Match.league_id == league.id, Match.season == season, Match.matchweek <= matchweek)
-                ).all() # all() me devuelve la ejecución como una lista con todas las filas
-                stats = {} # he copiado mucho código de la función create_standings de app.py
-                for match in matches:
-                    home_team = match.home_team_id
-                    away_team = match.away_team_id
-                    if home_team not in stats:
-                        stats[home_team] = {
-                            "points": 0,
-                            "matches_played": 0,
-                            "wins": 0,
-                            "draws": 0,
-                            "losses": 0,
-                            "goals_for": 0,
-                            "goals_against": 0,
-                            "goal_difference": 0
-                        }
-                    if away_team not in stats:
-                        stats[away_team] = {
-                            "points": 0,
-                            "matches_played": 0,
-                            "wins": 0,
-                            "draws": 0,
-                            "losses": 0,
-                            "goals_for": 0,
-                            "goals_against": 0,
-                            "goal_difference": 0
-                        }            
-                    stats[home_team]["matches_played"] += 1
-                    stats[home_team]["goals_for"] += match.home_goals
-                    stats[home_team]["goals_against"] += match.away_goals
-                    stats[home_team]["goal_difference"] += match.home_goals - match.away_goals
-                    stats[away_team]["matches_played"] += 1
-                    stats[away_team]["goals_for"] += match.away_goals
-                    stats[away_team]["goals_against"] += match.home_goals
-                    stats[away_team]["goal_difference"] += match.away_goals - match.home_goals
-                    if match.home_goals > match.away_goals:
-                        stats[home_team]["points"] += 3
-                        stats[home_team]["wins"] += 1
-                        stats[away_team]["losses"] += 1
-                    elif match.home_goals < match.away_goals:
-                        stats[away_team]["points"] += 3
-                        stats[away_team]["wins"] += 1
-                        stats[home_team]["losses"] += 1
+                    select(Match).where(Match.league_id == league.id, Match.season == season, (Match.home_team_id == team_id) | (Match.away_team_id == team_id))
+                ).all()
+                i = 0
+                while i <= min(matches_played-1, len(matches)-1):
+                    match = matches[i]
+                    if match.home_team_id == team_id:
+                        if match.home_goals > match.away_goals:
+                            points[team_id] += 3
+                        elif match.home_goals == match.away_goals:
+                            points[team_id] += 1
                     else:
-                        stats[home_team]["points"] += 1
-                        stats[away_team]["points"] += 1
-                        stats[home_team]["draws"] += 1
-                        stats[away_team]["draws"] += 1
-                if league.name in ["LaLiga", "Serie A"]:
-                    standings = sorted( # parámetros: objeto iterable, key (función que decide el orden), reverse)
-                        stats.items(), # lista de pares con los elementos del diccionario
-                        key = lambda x: (x[1]["points"]), # (criterio de orden, primer criterio de desempate, segundo criterio de desempate)
-                        reverse = True
-                    )
-                    standings = tie_breaker(standings, season)
-                else: 
-                    standings = sorted(
-                        stats.items(),
-                        key = lambda x: (x[1]["points"], x[1]["goal_difference"], x[1]["goals_for"]), 
-                        reverse = True
-                    )
-                # position = 1
-                for team_id, team_stats in standings:
-                    if team_stats["points"] >= points:
-                        s = session.exec(
-                            select(Standings).where(Standings.league_id == league.id, Standings.season == season, Standings.team_id == team_id)
-                        ).first()
-                        if league_name in ppm:
-                            data.append({
-                                "season": season,
-                                "position": s.position,
-                                # "position_mw": position,
-                                "team": s.team.name,
-                                "ppm_mw": "%.3f" % round(team_stats["points"]/matchweek, 3),
-                                "ppm": "%.3f" % round(s.points/s.matches_played, 3),
-                                "points_mw": team_stats["points"],
-                                "points": s.points,
-                                "matches_played": s.matches_played,
-                                "wins": s.wins,
-                                "draws": s.draws,
-                                "losses": s.losses,
-                                "goals_for": s.goals_for,
-                                "goals_against": s.goals_against,
-                                "goal_difference": s.goal_difference,
-                                "logo":  f"icons/teams/{s.team.country}/{s.team.name}.png"
-                            })
-                        else:
-                            data.append({
-                                "season": season,
-                                "position": s.position,
-                                # "position_mw": position,
-                                "team": s.team.name,
-                                "points_mw": team_stats["points"],
-                                "points": s.points,
-                                "matches_played": s.matches_played,
-                                "wins": s.wins,
-                                "draws": s.draws,
-                                "losses": s.losses,
-                                "goals_for": s.goals_for,
-                                "goals_against": s.goals_against,
-                                "goal_difference": s.goal_difference,
-                                "logo":  f"icons/teams/{s.team.country}/{s.team.name}.png"
-                            })
-                    # position += 1
+                        if match.home_goals < match.away_goals:
+                            points[team_id] += 3
+                        elif match.home_goals == match.away_goals:
+                            points[team_id] += 1
+                    i += 1
+            standings = sorted( # parámetros: objeto iterable, key (función que decide el orden), reverse)
+                points.items(), # lista de pares con los elementos del diccionario
+                key = lambda x: (x[1]), # (criterio de orden, primer criterio de desempate, segundo criterio de desempate)
+                reverse = True
+            )
+            for team_id, team_points in standings:
+                if team_points >= threshold:
+                    final_standings = session.exec(
+                        select(Standings).where(Standings.league_id == league.id, Standings.season == season, Standings.team_id == team_id)
+                    ).first()
+                    if league_name in ppm:
+                        data.append({
+                            "season": season,
+                            "position": final_standings.position,
+                            "team": final_standings.team.name,
+                            "ppm_mw": "%.3f" % round(team_points/matches_played, 3),
+                            "ppm": "%.3f" % round(final_standings.points/final_standings.matches_played, 3),
+                            "points_mw": team_points,
+                            "points": final_standings.points,
+                            "matches_played": final_standings.matches_played,
+                            "wins": final_standings.wins,
+                            "draws": final_standings.draws,
+                            "losses": final_standings.losses,
+                            "goals_for": final_standings.goals_for,
+                            "goals_against": final_standings.goals_against,
+                            "goal_difference": final_standings.goal_difference,
+                            "logo":  f"icons/teams/{final_standings.team.country}/{final_standings.team.name}.png"
+                        })
+                    else:
+                        data.append({
+                            "season": season,
+                            "position": final_standings.position,
+                            "team": final_standings.team.name,
+                            "points_mw": team_points,
+                            "points": final_standings.points,
+                            "matches_played": final_standings.matches_played,
+                            "wins": final_standings.wins,
+                            "draws": final_standings.draws,
+                            "losses": final_standings.losses,
+                            "goals_for": final_standings.goals_for,
+                            "goals_against": final_standings.goals_against,
+                            "goal_difference": final_standings.goal_difference,
+                            "logo":  f"icons/teams/{final_standings.team.country}/{final_standings.team.name}.png"
+                        })
     return data
 
 ################################################################################################################################################################################
