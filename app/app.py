@@ -28,20 +28,38 @@ for i in range(25):
 
 fixed_names = {
     "Alaves": "Alavés", # España
+    "Alcorcon": "Alcorcón",
     "Almeria": "Almería",
     "Ath Bilbao": "Athletic Bilbao",
+    "Ath Bilbao B": "Bilbao Athletic",
     "Ath Madrid": "Atlético Madrid",
+    "Barcelona B": "Barça Atlètic",
     "Cadiz": "Cádiz",
+    "Castellon": "Castellón",
     "Cordoba": "Córdoba",
     "Espanol": "Espanyol",
+    "Extremadura": "CF Extremadura",
+    "Ferrol": "Racing Ferrol",
     "Gimnastic": "Gimnàstic",
     "Hercules": "Hércules",
+    "Jaen": "Real Jaén",
     "La Coruna": "Deportivo",
     "Leganes": "Leganés",
+    "Leonesa": "Cultural Leonesa",
+    "Logrones": "Logroñés",
+    "Lorca": "Lorca Deportiva",
     "Malaga": "Málaga",
+    "Malaga B": "Atlético Malagueño",
+    "Mirandes": "Mirandés",
+    "Real Madrid B": "Real Madrid Castilla",
+    "Real Union": "Real Unión",
+    "Reus Deportiu": "Reus",
     "Santander": "Racing Santander",
+    "Sevilla B": "Sevilla Atlético",
     "Sociedad": "Real Sociedad",
+    "Sociedad B": "Real Sociedad B",
     "Sp Gijon": "Sporting Gijón",
+    "U.Las Palmas": "Universidad Las Palmas",
     "Vallecano": "Rayo Vallecano",
     "Man City": "Manchester City", # Inglaterra
     "Man United": "Manchester United",
@@ -218,7 +236,7 @@ def create_standings():
                         stats[away_team]["points"] += 1
                         stats[home_team]["draws"] += 1
                         stats[away_team]["draws"] += 1
-                if league.name in ["LaLiga", "Serie A"]:
+                if league.name in ["LaLiga", "LaLiga2", "Serie A"]:
                     standings = sorted( # parámetros: objeto iterable, key (función que decide el orden), reverse)
                         stats.items(), # lista de pares con los elementos del diccionario
                         key = lambda x: (x[1]["points"]), # (criterio de orden, primer criterio de desempate, segundo criterio de desempate)
@@ -254,6 +272,7 @@ def create_leagues():
     with Session(engine) as session:
         leagues = [
             League(name = "LaLiga", code = "SP1", country = "Spain", level = 1),
+            League(name = "LaLiga2", code = "SP2", country = "Spain", level = 2),
             League(name = "Premier League", code = "E0", country = "England", level = 1),
             League(name = "Serie A", code = "I1", country = "Italy", level = 1),
             League(name = "Bundesliga", code = "D1", country = "Germany", level = 1),

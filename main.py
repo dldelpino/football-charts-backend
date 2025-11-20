@@ -132,6 +132,8 @@ def promotead_teams(league_name: str):
                 season1 = seasons[0]
                 if league_name == "LaLiga":
                     promoted_teams = [19, 11, 17] # Villarreal, Las Palmas, Osasuna
+                if league_name == "LaLiga2":
+                    promoted_teams = [46, 27, 47, 50] # Real Jaén, Murcia, Racing Ferrol, Universidad Las Palmas
                 elif league_name == "Premier League":
                     promoted_teams = [60, 43, 44] # Ipswich, Charlton, Manchester City
                 elif league_name == "Serie A":
@@ -393,6 +395,8 @@ def promotion_frequency(league_name: str):
                 season1 = seasons[0]
                 if league_name == "LaLiga":
                     promoted_teams = [19, 11, 17] # Villarreal, Las Palmas, Osasuna
+                if league_name == "LaLiga2":
+                    promoted_teams = [46, 27, 47, 50] # Real Jaén, Murcia, Racing Ferrol, Universidad Las Palmas
                 elif league_name == "Premier League":
                     promoted_teams = [60, 43, 44] # Ipswich, Charlton, Manchester City
                 elif league_name == "Serie A":
@@ -435,6 +439,8 @@ def relegation(league_name: str):
                 season1 = seasons[-1]
                 if league_name == "LaLiga":
                     relegated_teams = [40, 11, 14] # Leganés, Las Palmas, Valladolid
+                if league_name == "LaLiga2":
+                    relegated_teams = [89, 23, 47, 66] # Eldense, Tenerife, Racing Ferrol, Cartagena
                 elif league_name == "Premier League":
                     relegated_teams = [53, 60, 50] # Leicester, Ipswich, Southampton
                 elif league_name == "Serie A":
