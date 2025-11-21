@@ -137,16 +137,16 @@ def promotead_teams(league_name: str):
                 season1 = seasons[0]
                 if league_name == "LaLiga":
                     promoted_teams = [19, 11, 17] # Villarreal, Las Palmas, Osasuna
-                if league_name == "LaLiga2":
+                elif league_name == "LaLiga2":
                     promoted_teams = [46, 27, 47, 50] # Real Jaén, Murcia, Racing Ferrol, Universidad Las Palmas
                 elif league_name == "Premier League":
-                    promoted_teams = [60, 43, 44] # Ipswich, Charlton, Manchester City
+                    promoted_teams = [107, 90, 91] # Ipswich, Charlton, Manchester City
                 elif league_name == "Serie A":
-                    promoted_teams = [93, 96, 91] # Atalanta, Vicenza, Napoli
+                    promoted_teams = [140, 143, 138] # Atalanta, Vicenza, Napoli
                 elif league_name == "Bundesliga":
-                    promoted_teams = [155, 151, 147] # Köln, Energie Cottbus, Bochum
+                    promoted_teams = [202, 198, 194] # Köln, Energie Cottbus, Bochum
                 elif league_name == "Ligue 1":
-                    promoted_teams = [187, 185, 193] # Lille, Guingamp, Toulouse
+                    promoted_teams = [234, 232, 240] # Lille, Guingamp, Toulouse
             else:
                 season0 = seasons[i-1]
                 season1 = seasons[i]
@@ -412,19 +412,18 @@ def promotion_frequency(league_name: str):
         teams_added = []
         for i in range(len(seasons)):
             if i == 0:
-                season1 = seasons[0]
                 if league_name == "LaLiga":
                     promoted_teams = [19, 11, 17] # Villarreal, Las Palmas, Osasuna
-                if league_name == "LaLiga2":
+                elif league_name == "LaLiga2":
                     promoted_teams = [46, 27, 47, 50] # Real Jaén, Murcia, Racing Ferrol, Universidad Las Palmas
                 elif league_name == "Premier League":
-                    promoted_teams = [60, 43, 44] # Ipswich, Charlton, Manchester City
+                    promoted_teams = [107, 90, 91] # Ipswich, Charlton, Manchester City
                 elif league_name == "Serie A":
-                    promoted_teams = [93, 96, 91] # Atalanta, Vicenza, Napoli
+                    promoted_teams = [140, 143, 138] # Atalanta, Vicenza, Napoli
                 elif league_name == "Bundesliga":
-                    promoted_teams = [155, 151, 147] # Köln, Energie Cottbus, Bochum
+                    promoted_teams = [202, 198, 194] # Köln, Energie Cottbus, Bochum
                 elif league_name == "Ligue 1":
-                    promoted_teams = [187, 185, 193] # Lille, Guingamp, Toulouse
+                    promoted_teams = [234, 232, 240] # Lille, Guingamp, Toulouse
             else:
                 season0 = seasons[i-1]
                 season1 = seasons[i]
@@ -458,7 +457,8 @@ def promotion_frequency(league_name: str):
                     teams_added.append(team)
                     data[team.name] = 1
                 else:
-                    data[team.name] += 1          
+                    data[team.name] += 1  
+    print(data)        
     return data
 
 @app.get("/relegation-frequency")
@@ -471,19 +471,18 @@ def relegation(league_name: str):
         teams_added = []
         for i in range(len(seasons)):
             if i == len(seasons)-1:
-                season1 = seasons[-1]
                 if league_name == "LaLiga":
                     relegated_teams = [40, 11, 14] # Leganés, Las Palmas, Valladolid
-                if league_name == "LaLiga2":
+                elif league_name == "LaLiga2":
                     relegated_teams = [89, 23, 47, 66] # Eldense, Tenerife, Racing Ferrol, Cartagena
                 elif league_name == "Premier League":
-                    relegated_teams = [53, 60, 50] # Leicester, Ipswich, Southampton
+                    relegated_teams = [100, 107, 97] # Leicester, Ipswich, Southampton
                 elif league_name == "Serie A":
-                    relegated_teams = [112, 108, 136] # Empoli, Venezia, Monza
+                    relegated_teams = [159, 155, 183] # Empoli, Venezia, Monza
                 elif league_name == "Bundesliga":
-                    relegated_teams = [176, 147] # Holstein Kiel, Bochum
+                    relegated_teams = [223, 194] # Holstein Kiel, Bochum
                 elif league_name == "Ligue 1":
-                    relegated_teams = [212, 186, 197] # Reims, Saint-Étienne, Montpellier
+                    relegated_teams = [259, 233, 244] # Reims, Saint-Étienne, Montpellier
             else:
                 season0 = seasons[i]
                 season1 = seasons[i+1]
