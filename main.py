@@ -128,8 +128,8 @@ def position_history(league_name: str, position: int):
 @app.get("/promoted-teams")
 def promotead_teams(league_name: str):
     with Session(engine) as session:
-        league_id = session.exec(
-            select(League.id).where(League.name == league_name)
+        league = session.exec(
+            select(League).where(League.name == league_name)
         ).first()
         data = []
         for i in range(len(seasons)):
@@ -150,13 +150,28 @@ def promotead_teams(league_name: str):
             else:
                 season0 = seasons[i-1]
                 season1 = seasons[i]
-                teams0 = session.exec(
-                    select(Standings.team_id).where(Standings.league_id == league_id, Standings.season == season0)
-                ).all()
-                teams1 = session.exec(
-                    select(Standings.team_id).where(Standings.league_id == league_id, Standings.season == season1)
-                ).all()
-                promoted_teams = list(set(teams1) - set(teams0)) # en segunda división esto también me devuelve los equipos descendidos de primera
+                if league.level == 1:
+                    teams0 = session.exec(
+                        select(Standings.team_id).where(Standings.league_id == league.id, Standings.season == season0)
+                    ).all()
+                    teams1 = session.exec(
+                        select(Standings.team_id).where(Standings.league_id == league.id, Standings.season == season1)
+                    ).all()
+                    promoted_teams = list(set(teams1) - set(teams0))
+                else:
+                    top_league = session.exec(
+                        select(League).where(League.country == league.country, League.level == 1)
+                    ).first()
+                    teams0 = session.exec(
+                        select(Standings.team_id).where(Standings.league_id == league.id, Standings.season == season0)
+                    ).all()
+                    teams1 = session.exec(
+                        select(Standings.team_id).where(Standings.league_id == top_league.id, Standings.season == season0)
+                    ).all()
+                    teams2 = session.exec(
+                        select(Standings.team_id).where(Standings.league_id == league.id, Standings.season == season1)
+                    ).all()
+                    promoted_teams = list(set(teams2) - set(teams1) - set(teams0))
             for team_id in promoted_teams:
                 team = session.exec(
                     select(Team).where(Team.id == team_id)
@@ -413,13 +428,28 @@ def promotion_frequency(league_name: str):
             else:
                 season0 = seasons[i-1]
                 season1 = seasons[i]
-                teams0 = session.exec(
-                    select(Standings.team_id).where(Standings.league_id == league.id, Standings.season == season0)
-                ).all()
-                teams1 = session.exec(
-                    select(Standings.team_id).where(Standings.league_id == league.id, Standings.season == season1)
-                ).all()
-                promoted_teams = list(set(teams1) - set(teams0))
+                if league.level == 1:
+                    teams0 = session.exec(
+                        select(Standings.team_id).where(Standings.league_id == league.id, Standings.season == season0)
+                    ).all()
+                    teams1 = session.exec(
+                        select(Standings.team_id).where(Standings.league_id == league.id, Standings.season == season1)
+                    ).all()
+                    promoted_teams = list(set(teams1) - set(teams0))
+                else:
+                    top_league = session.exec(
+                        select(League).where(League.country == league.country, League.level == 1)
+                    ).first()
+                    teams0 = session.exec(
+                        select(Standings.team_id).where(Standings.league_id == league.id, Standings.season == season0)
+                    ).all()
+                    teams1 = session.exec(
+                        select(Standings.team_id).where(Standings.league_id == top_league.id, Standings.season == season0)
+                    ).all()
+                    teams2 = session.exec(
+                        select(Standings.team_id).where(Standings.league_id == league.id, Standings.season == season1)
+                    ).all()
+                    promoted_teams = list(set(teams2) - set(teams1) - set(teams0))
             for team_id in promoted_teams:
                 team = session.exec(
                     select(Team).where(Team.id == team_id)
@@ -457,13 +487,28 @@ def relegation(league_name: str):
             else:
                 season0 = seasons[i]
                 season1 = seasons[i+1]
-                teams0 = session.exec(
-                    select(Standings.team_id).where(Standings.league_id == league.id, Standings.season == season0)
-                ).all()
-                teams1 = session.exec(
-                    select(Standings.team_id).where(Standings.league_id == league.id, Standings.season == season1)
-                ).all()
-                relegated_teams = list(set(teams0) - set(teams1))
+                if league.level == 1:
+                    teams0 = session.exec(
+                        select(Standings.team_id).where(Standings.league_id == league.id, Standings.season == season0)
+                    ).all()
+                    teams1 = session.exec(
+                        select(Standings.team_id).where(Standings.league_id == league.id, Standings.season == season1)
+                    ).all()
+                    relegated_teams = list(set(teams0) - set(teams1))
+                else:
+                    top_league = session.exec(
+                        select(League).where(League.country == league.country, League.level == 1)
+                    ).first()
+                    teams0 = session.exec(
+                        select(Standings.team_id).where(Standings.league_id == league.id, Standings.season == season0)
+                    ).all()
+                    teams1 = session.exec(
+                        select(Standings.team_id).where(Standings.league_id == top_league.id, Standings.season == season1)
+                    ).all()
+                    teams2 = session.exec(
+                        select(Standings.team_id).where(Standings.league_id == league.id, Standings.season == season1)
+                    ).all()
+                    relegated_teams = list(set(teams0) - set(teams1) - set(teams2))
             for team_id in relegated_teams:
                 team = session.exec(
                     select(Team).where(Team.id == team_id)
