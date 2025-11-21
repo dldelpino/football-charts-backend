@@ -33,8 +33,8 @@ def average_stats(league_name: str):
             select(League).where(League.name == league_name)
         ).first()
         teams = session.exec(
-            select(Teams)
-            .join(Standings, Teams.id == Standings.team_id)
+            select(Team)
+            .join(Standings, Team.id == Standings.team_id)
             .where(Standings.league_id == league.id)
             .distinct()
         ).all()
