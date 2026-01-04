@@ -34,6 +34,7 @@ class Standings(SQLModel, table = True):
     league_id: int = Field(foreign_key = "league.id")
     season: str
     position: int
+    status: int | None = None
     team_id: int = Field(foreign_key = "team.id")
     points: int
     matches_played: int

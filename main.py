@@ -92,6 +92,7 @@ def position_history(league_name: str, position: int):
             if league_name in ppm:
                 sort_by = "ppm"
                 data.append({
+                    "status": s.status,
                     "season": s.season,
                     "position": s.position,
                     "team": s.team.name,
@@ -109,6 +110,7 @@ def position_history(league_name: str, position: int):
             else:
                 sort_by = "points"
                 data.append({
+                    "status": s.status,
                     "season": s.season,
                     "position": s.position,
                     "team": s.team.name,
@@ -182,6 +184,7 @@ def promotead_teams(league_name: str):
                 if league_name in ppm:
                     sort_by = "ppm"
                     data.append({
+                        "status": standings.status,
                         "season": standings.season,
                         "position": standings.position,
                         "team": standings.team.name,
@@ -199,6 +202,7 @@ def promotead_teams(league_name: str):
                 else:
                     sort_by = "points"
                     data.append({
+                        "status": standings.status,
                         "season": standings.season,
                         "position": standings.position,
                         "team": standings.team.name,
@@ -229,6 +233,7 @@ def season_standings(league_name: str, season: str):
         data = []
         for standings, team in results:
             data.append({
+                "status": standings.status,
                 "position": standings.position,
                 "team": team.name,
                 "points": standings.points,
@@ -260,6 +265,7 @@ def team_trajectory(league_name, team_name: str):
             if league.name in ppm:
                 sort_by = "ppm"
                 data.append({
+                    "status": s.status,
                     "season": s.season,
                     "position": s.position,
                     "team": s.team.name,
@@ -277,6 +283,7 @@ def team_trajectory(league_name, team_name: str):
             else:
                 sort_by = "points"
                 data.append({
+                    "status": s.status,
                     "season": s.season,
                     "position": s.position,
                     "team": s.team.name,
@@ -336,6 +343,7 @@ def threshold_standings(league_name: str, matches_played: int, threshold: int):
                     ).first()
                     if league_name in ppm:
                         data.append({
+                            "status": final_standings.status,
                             "season": season,
                             "position": final_standings.position,
                             "team": final_standings.team.name,
@@ -354,6 +362,7 @@ def threshold_standings(league_name: str, matches_played: int, threshold: int):
                         })
                     else:
                         data.append({
+                            "status": final_standings.status,
                             "season": season,
                             "position": final_standings.position,
                             "team": final_standings.team.name,
