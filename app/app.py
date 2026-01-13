@@ -152,7 +152,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 8:
                 s.status = 5
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season in ["23/24", "21/22"]:
             if s.position <= 4:
                 s.status = 0
@@ -161,7 +161,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 7:
                 s.status = 5
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "22/23":
             if s.position in [1, 2, 3, 4, 12]:
                 s.status = 0
@@ -170,14 +170,14 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 7:
                 s.status = 5
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "20/21":
             if s.position in [1, 2, 3, 4, 7]:
                 s.status = 0
             elif s.position in [5, 6]:
                 s.status = 2
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season in ["17/18", "18/19", "19/20"]:
             if s.position <= 4:
                 s.status = 0
@@ -186,7 +186,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 7:
                 s.status = 3
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "16/17":
             if s.position <= 3:
                 s.status = 0
@@ -197,7 +197,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 7:
                 s.status = 3
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "15/16":
             if s.position in [1, 2, 3, 7]:
                 s.status = 0
@@ -206,7 +206,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [5, 6]:
                 s.status = 2
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "14/15":
             if s.position in [1, 2, 3, 5]:
                 s.status = 0
@@ -217,7 +217,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 7:
                 s.status = 3
             elif s.position in [13, 19, 20]:
-                s.status = 7
+                s.status = 10
         elif s.season == "13/14":
             if s.position <= 3:
                 s.status = 0
@@ -228,7 +228,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [6, 7]:
                 s.status = 3
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "12/13":
             if s.position <= 3:
                 s.status = 0
@@ -239,7 +239,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [7, 9]:
                 s.status = 3
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "11/12":
             if s.position <= 3:
                 s.status = 0
@@ -250,7 +250,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [6, 10]:
                 s.status = 3
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "10/11":
             if s.position <= 3:
                 s.status = 0
@@ -259,7 +259,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [5, 6, 7]:
                 s.status = 3
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "09/10":
             if s.position <= 3:
                 s.status = 0
@@ -270,7 +270,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 9:
                 s.status = 2
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "08/09":
             if s.position <= 3:
                 s.status = 0
@@ -279,7 +279,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [5, 6, 13]:
                 s.status = 3
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "07/08":
             if s.position <= 2:
                 s.status = 0
@@ -290,7 +290,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 9:
                 s.status = 6
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season in "06/07":
             if s.position <= 2:
                 s.status = 0
@@ -301,7 +301,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 7:
                 s.status = 6
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "05/06":
             if s.position <= 2:
                 s.status = 0
@@ -312,7 +312,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 7:
                 s.status = 6
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "04/05":
             if s.position <= 2:
                 s.status = 0
@@ -323,7 +323,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [7, 8, 9]:
                 s.status = 6
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "03/04":
             if s.position <= 2:
                 s.status = 0
@@ -334,7 +334,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [7, 8]:
                 s.status = 6
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "02/03":
             if s.position <= 2:
                 s.status = 0
@@ -345,7 +345,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [15, 16]:
                 s.status = 6
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "01/02":
             if s.position <= 3:
                 s.status = 0
@@ -356,7 +356,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [10, 15]:
                 s.status = 6
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "00/01":
             if s.position <= 2:
                 s.status = 0
@@ -365,58 +365,58 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [5, 6, 17]:
                 s.status = 3
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
     elif s.league.code == "SP2":
         if s.season in ["24/25", "23/24", "22/23", "21/22", "20/21", "19/20", "18/19", "17/18", "16/17", "15/16", "14/15"]:
             if s.position <= 2:
-                s.status = 9
-            elif s.position in [3, 4, 5, 6]:
-                s.status = 10
-            elif s.position >= 19:
                 s.status = 7
+            elif s.position in [3, 4, 5, 6]:
+                s.status = 8
+            elif s.position >= 19:
+                s.status = 10
         if s.season == "13/14":
             if s.position <= 2:
-                s.status = 9
-            elif s.position in [5, 6, 7]:
-                s.status = 10
-            elif s.position in [4, 20, 21, 22]:
                 s.status = 7
+            elif s.position in [5, 6, 7]:
+                s.status = 8
+            elif s.position in [4, 20, 21, 22]:
+                s.status = 10
         if s.season == "12/13":
             if s.position <= 2:
-                s.status = 9
-            elif s.position in [3, 4, 5, 6]:
-                s.status = 10
-            elif s.position in [18, 20, 21, 22]:
                 s.status = 7
+            elif s.position in [3, 4, 5, 6]:
+                s.status = 8
+            elif s.position in [18, 20, 21, 22]:
+                s.status = 10
         if s.season == "11/12":
             if s.position <= 2:
-                s.status = 9
-            elif s.position in [3, 4, 5, 6]:
-                s.status = 10
-            elif s.position in [12, 20, 21, 22]:
                 s.status = 7
+            elif s.position in [3, 4, 5, 6]:
+                s.status = 8
+            elif s.position in [12, 20, 21, 22]:
+                s.status = 10
         if s.season == "10/11":
             if s.position <= 2:
-                s.status = 9
-            elif s.position in [4, 5, 6, 7]:
-                s.status = 10
-            elif s.position >= 19:
                 s.status = 7
+            elif s.position in [4, 5, 6, 7]:
+                s.status = 8
+            elif s.position >= 19:
+                s.status = 10
         if s.season in ["09/10", "08/09", "07/08", "06/07", "05/06", "04/05", "03/04", "00/01"]:
             if s.position <= 3:
-                s.status = 9
-            elif s.position >= 19:
                 s.status = 7
+            elif s.position >= 19:
+                s.status = 10
         if s.season == "02/03":
             if s.position <= 3:
-                s.status = 9
-            elif s.position in [9, 20, 21, 22]:
                 s.status = 7
+            elif s.position in [9, 20, 21, 22]:
+                s.status = 10
         if s.season == "01/02":
             if s.position <= 3:
-                s.status = 9
-            elif s.position in [16, 20, 21, 22]:
                 s.status = 7
+            elif s.position in [16, 20, 21, 22]:
+                s.status = 10
     elif s.league.code == "E0":
         if s.season == "24/25":
             if s.position in [1, 2, 3, 4, 5, 17]:
@@ -426,7 +426,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 12:
                 s.status = 5
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "23/24":
             if s.position <= 4:
                 s.status = 0
@@ -435,7 +435,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 6:
                 s.status = 5
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "22/23":
             if s.position <= 4:
                 s.status = 0
@@ -444,7 +444,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 7:
                 s.status = 5
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season in ["21/22", "20/21"]:
             if s.position <= 4:
                 s.status = 0
@@ -453,7 +453,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 7:
                 s.status = 5
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "19/20":
             if s.position <= 4:
                 s.status = 0
@@ -462,7 +462,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 6:
                 s.status = 3
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season in ["18/19", "17/18"]:
             if s.position <= 4:
                 s.status = 0
@@ -471,7 +471,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 7:
                 s.status = 3
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "16/17":
             if s.position in [1, 2, 3, 6]:
                 s.status = 0
@@ -482,7 +482,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 7:
                 s.status = 3
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "15/16":
             if s.position <= 3:
                 s.status = 0
@@ -493,7 +493,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 7:
                 s.status = 3
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "14/15":
             if s.position <= 3:
                 s.status = 0
@@ -504,7 +504,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [7, 12]:
                 s.status = 3
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "13/14":
             if s.position <= 3:
                 s.status = 0
@@ -513,7 +513,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 5:
                 s.status = 2
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "12/13":
             if s.position <= 3:
                 s.status = 0
@@ -524,7 +524,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [5, 9]:
                 s.status = 3
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "11/12":
             if s.position in [1, 2, 3, 6]:
                 s.status = 0
@@ -533,7 +533,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [5, 8]:
                 s.status = 3
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "10/11":
             if s.position <= 3:
                 s.status = 0
@@ -544,7 +544,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 18:
                 s.status = 12
             elif s.position > 18:
-                s.status = 7
+                s.status = 10
         elif s.season in ["09/10", "08/09"]:
             if s.position <= 3:
                 s.status = 0
@@ -553,7 +553,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [5, 6, 7]:
                 s.status = 3
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "07/08":
             if s.position <= 2:
                 s.status = 0
@@ -564,7 +564,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 6:
                 s.status = 6
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "06/07":
             if s.position <= 2:
                 s.status = 0
@@ -575,7 +575,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 10:
                 s.status = 6
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "05/06":
             if s.position <= 2:
                 s.status = 0
@@ -586,7 +586,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 7:
                 s.status = 6
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "04/05":
             if s.position <= 2:
                 s.status = 0
@@ -597,7 +597,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 14:
                 s.status = 6
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "03/04":
             if s.position <= 2:
                 s.status = 0
@@ -606,7 +606,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [5, 11]:
                 s.status = 3
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "02/03":
             if s.position <= 2:
                 s.status = 0
@@ -615,7 +615,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [5, 6, 8, 9]:
                 s.status = 3
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "01/02":
             if s.position <= 2:
                 s.status = 0
@@ -628,7 +628,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 18:
                 s.status = 12
             elif s.position > 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "00/01":
             if s.position <= 2:
                 s.status = 0
@@ -639,7 +639,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [8, 11]:
                 s.status = 6
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
     elif s.league.code == "I1":
         if s.season == "24/25":
             if s.position <= 4:
@@ -649,7 +649,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 6:
                 s.status = 5
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "23/24":
             if s.position <= 5:
                 s.status = 0
@@ -658,7 +658,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 8:
                 s.status = 5
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "22/23":
             if s.position <= 4:
                 s.status = 0
@@ -667,9 +667,9 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 8:
                 s.status = 5
             elif s.position in [17, 18]:
-                s.status = 8
+                s.status = 9
             elif s.position >= 19:
-                s.status = 7
+                s.status = 10
         elif s.season in ["21/22", "20/21"]:
             if s.position <= 4:
                 s.status = 0
@@ -678,7 +678,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 7:
                 s.status = 5
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "19/20":
             if s.position <= 4:
                 s.status = 0
@@ -687,7 +687,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 6:
                 s.status = 3
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "18/19":
             if s.position <= 4:
                 s.status = 0
@@ -696,7 +696,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 7:
                 s.status = 3
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "17/18":
             if s.position <= 4:
                 s.status = 0
@@ -705,7 +705,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 7:
                 s.status = 3
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season in ["16/17", "15/16"]:
             if s.position <= 2:
                 s.status = 0
@@ -716,7 +716,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 6:
                 s.status = 3
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "14/15":
             if s.position <= 2:
                 s.status = 0
@@ -727,7 +727,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 7:
                 s.status = 3
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "13/14":
             if s.position <= 2:
                 s.status = 0
@@ -738,7 +738,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [5, 7]:
                 s.status = 3
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "12/13":
             if s.position <= 2:
                 s.status = 0
@@ -749,7 +749,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [4, 5]:
                 s.status = 3
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "11/12":
             if s.position <= 2:
                 s.status = 0
@@ -760,7 +760,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [4, 6]:
                 s.status = 3
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season in ["10/11", "09/10"]:
             if s.position <= 3:
                 s.status = 0
@@ -769,7 +769,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [5, 6, 7]:
                 s.status = 3
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "08/09":
             if s.position <= 3:
                 s.status = 0
@@ -778,7 +778,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [5, 6, 10]:
                 s.status = 3
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "07/08":
             if s.position <= 2:
                 s.status = 0
@@ -789,7 +789,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 8:
                 s.status = 6
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "06/07":
             if s.position in [1, 2, 4]:
                 s.status = 0
@@ -800,7 +800,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 9:
                 s.status = 6
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "05/06":
             if s.position <= 2:
                 s.status = 0
@@ -809,7 +809,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [5, 6, 7]:
                 s.status = 3
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "04/05":
             if s.position <= 2:
                 s.status = 0
@@ -820,7 +820,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 13:
                 s.status = 6
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "03/04":
             if s.position <= 2:
                 s.status = 0
@@ -829,9 +829,9 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [5, 6, 7]:
                 s.status = 3
             elif s.position == 15:
-                s.status = 8
+                s.status = 9
             elif s.position >= 16:
-                s.status = 7
+                s.status = 10
         elif s.season == "02/03":
             if s.position <= 3:
                 s.status = 0
@@ -842,9 +842,9 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [9, 10]:
                 s.status = 6
             elif s.position in [14, 15]:
-                s.status = 8
+                s.status = 9
             elif s.position >= 16:
-                s.status = 7
+                s.status = 10
         elif s.season == "01/02":
             if s.position <= 2:
                 s.status = 0
@@ -855,7 +855,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [7, 8, 11]:
                 s.status = 6
             elif s.position >= 15:
-                s.status = 7
+                s.status = 10
         elif s.season == "00/01":
             if s.position <= 2:
                 s.status = 0
@@ -866,9 +866,9 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 8:
                 s.status = 6
             elif s.position in [14, 15]:
-                s.status = 8
+                s.status = 9
             elif s.position >= 16:
-                s.status = 7
+                s.status = 10
     elif s.league.code == "D1":
         if s.season == "24/25":
             if s.position <= 4:
@@ -878,9 +878,9 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 6:
                 s.status = 5
             elif s.position == 16:
-                s.status = 8
+                s.status = 9
             elif s.position >= 17:
-                s.status = 7
+                s.status = 10
         elif s.season == "23/24":
             if s.position <= 5:
                 s.status = 0
@@ -889,9 +889,9 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 8:
                 s.status = 5
             elif s.position == 16:
-                s.status = 8
+                s.status = 9
             elif s.position >= 17:
-                s.status = 7
+                s.status = 10
         elif s.season in ["22/23", "20/21"]:
             if s.position <= 4:
                 s.status = 0
@@ -900,9 +900,9 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 7:
                 s.status = 5
             elif s.position == 16:
-                s.status = 8
+                s.status = 9
             elif s.position >= 17:
-                s.status = 7
+                s.status = 10
         elif s.season == "21/22":
             if s.position in [1, 2, 3, 4, 11]:
                 s.status = 0
@@ -911,9 +911,9 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 7:
                 s.status = 5
             elif s.position == 16:
-                s.status = 8
+                s.status = 9
             elif s.position >= 17:
-                s.status = 7
+                s.status = 10
         elif s.season in ["19/20", "18/19"]:
             if s.position <= 4:
                 s.status = 0
@@ -922,9 +922,9 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 7:
                 s.status = 3
             elif s.position == 16:
-                s.status = 8
+                s.status = 9
             elif s.position >= 17:
-                s.status = 7
+                s.status = 10
         elif s.season == "17/18":
             if s.position <= 4:
                 s.status = 0
@@ -933,9 +933,9 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 6:
                 s.status = 3
             elif s.position == 16:
-                s.status = 8
+                s.status = 9
             elif s.position >= 17:
-                s.status = 7
+                s.status = 10
         elif s.season in ["16/17", "15/16", "14/15"]:
             if s.position <= 3:
                 s.status = 0
@@ -946,9 +946,9 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 7:
                 s.status = 3
             elif s.position == 16:
-                s.status = 8
+                s.status = 9
             elif s.position >= 17:
-                s.status = 7
+                s.status = 10
         elif s.season == "13/14":
             if s.position <= 3:
                 s.status = 0
@@ -959,9 +959,9 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [6, 7]:
                 s.status = 3
             elif s.position == 16:
-                s.status = 8
+                s.status = 9
             elif s.position >= 17:
-                s.status = 7
+                s.status = 10
         elif s.season == "12/13":
             if s.position <= 3:
                 s.status = 0
@@ -972,9 +972,9 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [6, 12]:
                 s.status = 3
             elif s.position == 16:
-                s.status = 8
+                s.status = 9
             elif s.position >= 17:
-                s.status = 7
+                s.status = 10
         elif s.season == "11/12":
             if s.position <= 3:
                 s.status = 0
@@ -985,9 +985,9 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [6, 7]:
                 s.status = 3
             elif s.position == 16:
-                s.status = 8
+                s.status = 9
             elif s.position >= 17:
-                s.status = 7
+                s.status = 10
         elif s.season == "10/11":
             if s.position <= 2:
                 s.status = 0
@@ -996,9 +996,9 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [4, 5, 14]:
                 s.status = 3
             elif s.position == 16:
-                s.status = 8
+                s.status = 9
             elif s.position >= 17:
-                s.status = 7
+                s.status = 10
         elif s.season == "09/10":
             if s.position <= 2:
                 s.status = 0
@@ -1007,9 +1007,9 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [4, 5, 6]:
                 s.status = 3
             elif s.position == 16:
-                s.status = 8
+                s.status = 9
             elif s.position >= 17:
-                s.status = 7
+                s.status = 10
         elif s.season == "08/09":
             if s.position <= 2:
                 s.status = 0
@@ -1018,9 +1018,9 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [4, 5, 10]:
                 s.status = 3
             elif s.position == 16:
-                s.status = 8
+                s.status = 9
             elif s.position >= 17:
-                s.status = 7
+                s.status = 10
         elif s.season == "07/08":
             if s.position <= 2:
                 s.status = 0
@@ -1031,7 +1031,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 6:
                 s.status = 6
             elif s.position >= 16:
-                s.status = 7
+                s.status = 10
         elif s.season == "06/07":
             if s.position <= 2:
                 s.status = 0
@@ -1042,7 +1042,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 7:
                 s.status = 6
             elif s.position >= 16:
-                s.status = 7
+                s.status = 10
         elif s.season == "05/06":
             if s.position <= 2:
                 s.status = 0
@@ -1053,7 +1053,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 6:
                 s.status = 6
             elif s.position >= 16:
-                s.status = 7
+                s.status = 10
         elif s.season == "04/05":
             if s.position <= 2:
                 s.status = 0
@@ -1064,7 +1064,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [7, 8, 9]:
                 s.status = 6
             elif s.position >= 16:
-                s.status = 7
+                s.status = 10
         elif s.season == "03/04":
             if s.position <= 2:
                 s.status = 0
@@ -1075,7 +1075,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [6, 7, 8, 10]:
                 s.status = 6
             elif s.position >= 16:
-                s.status = 7
+                s.status = 10
         elif s.season == "02/03":
             if s.position <= 2:
                 s.status = 0
@@ -1086,7 +1086,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [6, 7, 8]:
                 s.status = 6
             elif s.position >= 16:
-                s.status = 7
+                s.status = 10
         elif s.season == "01/02":
             if s.position <= 2:
                 s.status = 0
@@ -1097,7 +1097,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [7, 8, 9]:
                 s.status = 6
             elif s.position >= 16:
-                s.status = 7
+                s.status = 10
         elif s.season == "00/01":
             if s.position <= 2:
                 s.status = 0
@@ -1108,7 +1108,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [7, 9, 11]:
                 s.status = 6
             elif s.position >= 16:
-                s.status = 7
+                s.status = 10
     elif s.league.code == "F1":
         if s.season in ["24/25", "23/24"]:
             if s.position <= 3:
@@ -1120,9 +1120,9 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 7:
                 s.status = 5
             elif s.position == 16:
-                s.status = 8
+                s.status = 9
             elif s.position >= 17:
-                s.status = 7
+                s.status = 10
         elif s.season == "22/23":
             if s.position <= 2:
                 s.status = 0
@@ -1133,7 +1133,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 5:
                 s.status = 5
             elif s.position >= 17:
-                s.status = 7
+                s.status = 10
         elif s.season == "21/22":
             if s.position <= 2:
                 s.status = 0
@@ -1144,9 +1144,9 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 5:
                 s.status = 5
             elif s.position == 18:
-                s.status = 8
+                s.status = 9
             elif s.position >= 19:
-                s.status = 7
+                s.status = 10
         elif s.season == "20/21":
             if s.position <= 2:
                 s.status = 0
@@ -1157,9 +1157,9 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 6:
                 s.status = 5
             elif s.position == 18:
-                s.status = 8
+                s.status = 9
             elif s.position >= 19:
-                s.status = 7
+                s.status = 10
         elif s.season == "19/20":
             if s.position <= 3:
                 s.status = 0
@@ -1168,7 +1168,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 6:
                 s.status = 3
             elif s.position >= 19:
-                s.status = 7
+                s.status = 10
         elif s.season == "18/19":
             if s.position <= 3:
                 s.status = 0
@@ -1177,9 +1177,9 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 11:
                 s.status = 3
             elif s.position == 18:
-                s.status = 8
+                s.status = 9
             elif s.position >= 19:
-                s.status = 7
+                s.status = 10
         elif s.season == "17/18":
             if s.position <= 3:
                 s.status = 0
@@ -1188,9 +1188,9 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 6:
                 s.status = 3
             elif s.position == 18:
-                s.status = 8
+                s.status = 9
             elif s.position >= 19:
-                s.status = 7
+                s.status = 10
         elif s.season == "16/17":
             if s.position <= 2:
                 s.status = 0
@@ -1201,9 +1201,9 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [5, 6]:
                 s.status = 3
             elif s.position == 18:
-                s.status = 8
+                s.status = 9
             elif s.position >= 19:
-                s.status = 7
+                s.status = 10
         elif s.season in ["15/16", "14/15"]:
             if s.position <= 2:
                 s.status = 0
@@ -1214,7 +1214,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [5, 6]:
                 s.status = 3
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "13/14":
             if s.position <= 2:
                 s.status = 0
@@ -1225,7 +1225,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [4, 5]:
                 s.status = 3
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "12/13":
             if s.position <= 2:
                 s.status = 0
@@ -1236,7 +1236,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [4, 5]:
                 s.status = 3
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "11/12":
             if s.position <= 2:
                 s.status = 0
@@ -1247,7 +1247,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [5, 10]:
                 s.status = 3
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "10/11":
             if s.position <= 2:
                 s.status = 0
@@ -1256,7 +1256,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [4, 5, 6]:
                 s.status = 3
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "09/10":
             if s.position <= 2:
                 s.status = 0
@@ -1265,7 +1265,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [4, 5, 13]:
                 s.status = 3
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "08/09":
             if s.position <= 2:
                 s.status = 0
@@ -1274,7 +1274,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [4, 5]:
                 s.status = 3
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "07/08":
             if s.position <= 2:
                 s.status = 0
@@ -1285,7 +1285,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 6:
                 s.status = 6
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "06/07":
             if s.position <= 2:
                 s.status = 0
@@ -1296,7 +1296,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position == 5:
                 s.status = 6
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "05/06":
             if s.position <= 2:
                 s.status = 0
@@ -1307,7 +1307,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [5, 6]:
                 s.status = 6
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "04/05":
             if s.position <= 2:
                 s.status = 0
@@ -1318,7 +1318,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [5, 6, 7]:
                 s.status = 6
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "03/04":
             if s.position <= 2:
                 s.status = 0
@@ -1329,7 +1329,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [6, 10, 11]:
                 s.status = 6
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "02/03":
             if s.position <= 2:
                 s.status = 0
@@ -1340,7 +1340,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [7, 9, 10]:
                 s.status = 6
             elif s.position >= 18:
-                s.status = 7
+                s.status = 10
         elif s.season == "01/02":
             if s.position <= 2:
                 s.status = 0
@@ -1351,7 +1351,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [5, 7, 8]:
                 s.status = 6
             elif s.position == 17:
-                s.status = 7
+                s.status = 10
             elif s.position == 18:
                 s.status = 12
         elif s.season == "00/01":
@@ -1364,7 +1364,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
             elif s.position in [6, 7, 8, 9]:
                 s.status = 6
             elif s.position >= 16:
-                s.status = 7
+                s.status = 10
     return s
 
 def create_leagues():
