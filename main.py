@@ -214,7 +214,7 @@ def promotead_teams(league_name: str):
                         "goal_difference": standings.goal_difference,
                         "logo": f"icons/teams/{standings.team.country}/{standings.team.name}.png",
                     })
-    data = sorted(data, key = lambda x: (x["season"], -float(x[sort_by]))) # ojito con ese - (tengo que convertir a float porque ppm es un string)
+    data = sorted(data, key = lambda x: (x["position"], -float(x[sort_by]))) # el - cambiar el orden de ordenación; tengo que convertir a float porque ppm es un string
     return data
 
 @app.get("/season-standings")
@@ -295,7 +295,7 @@ def team_trajectory(league_name: str, team_name: str):
                     "goal_difference": s.goal_difference,
                     "logo": f"icons/teams/{s.team.country}/{s.team.name}.png",
                 })
-    data = sorted(data, key = lambda x: x[sort_by], reverse = True)
+    data = sorted(data, key = lambda x: (x["position"], -float(x[sort_by])))
     return data
 
 @app.get("/threshold-standings")
@@ -340,6 +340,8 @@ def threshold_standings(league_name: str, matches_played: int, threshold: int):
                         select(Standings).where(Standings.league_id == league.id, Standings.season == season, Standings.team_id == team_id)
                     ).first()
                     if league_name in ppm:
+                        sort_by = "ppm"
+                        sort_by_mw = "ppm_mw"
                         data.append({
                             "status": final_standings.status,
                             "season": season,
@@ -359,6 +361,8 @@ def threshold_standings(league_name: str, matches_played: int, threshold: int):
                             "logo":  f"icons/teams/{final_standings.team.country}/{final_standings.team.name}.png"
                         })
                     else:
+                        sort_by = "points"
+                        sort_by_mw = "points_mw"
                         data.append({
                             "status": final_standings.status,
                             "season": season,
@@ -375,6 +379,7 @@ def threshold_standings(league_name: str, matches_played: int, threshold: int):
                             "goal_difference": final_standings.goal_difference,
                             "logo":  f"icons/teams/{final_standings.team.country}/{final_standings.team.name}.png"
                         })
+    data = sorted(data, key = lambda x: (x["position"], -float(x[sort_by]), -float(x[sort_by_mw])))
     return data
 
 #########################################################################################################################################################
