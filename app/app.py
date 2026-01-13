@@ -92,7 +92,7 @@ fixed_names = {
     "St Etienne": "Saint-Étienne",
 }
 
-def load_dataframe(league, season): # ejemplo: league = SP1, season = 2425
+def load_dataframe(league: str, season: str): # ejemplo: league = SP1, season = 2425
     url = f"https://www.football-data.co.uk/mmz4281/{season}/{league}.csv"
     df = pd.read_csv(url, usecols = ["Div", "Date", "HomeTeam", "AwayTeam", "FTHG", "FTAG"], on_bad_lines = "warn", encoding = "utf-8")
     df = df.dropna() # a veces aparecen filas vacías
@@ -101,7 +101,8 @@ def load_dataframe(league, season): # ejemplo: league = SP1, season = 2425
     df.insert(1, "Season", season)
     return df
 
-def head_to_head(teams, season): # teams es una lista con ID de equipos
+
+def head_to_head(teams: list[int], season: str): # teams es una lista con ID de equipos
     stats = {team: {"points": 0, "goal_difference": 0} for team in teams}
     with Session(engine) as session:
         matches = session.exec(
@@ -121,7 +122,7 @@ def head_to_head(teams, season): # teams es una lista con ID de equipos
                 stats[away_team]["points"] += 1
     return stats
 
-def tie_breaker(standings, season): # standings es una lista con elementos de la forma (team.id, {"points": 0, "matches_played": 0, ...})
+def tie_breaker(standings: list[(int, dict)], season: str): # standings es una lista con elementos de la forma (team.id, {"points": 0, "matches_played": 0, ...})
     i = 0
     result = []
     while i < len(standings):
@@ -401,7 +402,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
                 s.status = 10
             elif s.position >= 19:
                 s.status = 7
-        if s.season in ["09/10", "08/09", "07/08", "06/07", "05/06", "04/05", "03/04", "01/02"]:
+        if s.season in ["09/10", "08/09", "07/08", "06/07", "05/06", "04/05", "03/04", "00/01"]:
             if s.position <= 3:
                 s.status = 9
             elif s.position >= 19:
@@ -411,7 +412,7 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
                 s.status = 9
             elif s.position in [9, 20, 21, 22]:
                 s.status = 7
-        if s.season == "00/01":
+        if s.season == "01/02":
             if s.position <= 3:
                 s.status = 9
             elif s.position in [16, 20, 21, 22]:
