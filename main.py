@@ -469,8 +469,7 @@ def promotion_frequency(league_name: str):
                     teams_added.append(team)
                     data[team.name] = 1
                 else:
-                    data[team.name] += 1  
-    print(data)        
+                    data[team.name] += 1      
     return data
 
 @app.get("/relegation-frequency")
@@ -529,4 +528,73 @@ def relegation(league_name: str):
                     data[team.name] = 1
                 else:
                     data[team.name] += 1          
+    return data
+
+#########################################################################################################################################################
+
+# OTHER
+
+#########################################################################################################################################################
+
+@app.get("/team-streaks")
+def team_streaks(league_name: str, team_name: str):
+    with Session(engine) as session:
+        team = session.exec(
+            select(Team).where(Team.name == team_name)
+        ).first()
+        league = session.exec(
+            select(League).where(League.name == league_name)
+        ).first()
+        matches = session.exec(
+            select(Match).where(Match.league_id == league.id, (Match.home_team_id == team.id) | (Match.away_team_id == team.id))
+        ).all()
+        data = []
+        # result = {
+        #     "record": 0,  
+        #     "matches": [],
+        # }
+        for k in range(10):
+            i = 0
+            aux = []
+            data.append({
+                "record": 0,  
+                "matches": [],
+            })
+            for m in matches:
+                if k == 0: # most consecutive wins
+                    criteria = (m.home_goals > m.away_goals and m.home_team_id == team.id) or (m.home_goals < m.away_goals and m.away_team_id == team.id)
+                elif k == 1: # most consecutive draws
+                    criteria = m.home_goals == m.away_goals
+                elif k == 2: # most consecutive losses
+                    criteria = (m.home_goals < m.away_goals and m.home_team_id == team.id) or (m.home_goals > m.away_goals and m.away_team_id == team.id)
+                elif k == 3: # most consecutive matches scoring
+                    criteria = (m.home_goals > 0 and m.home_team_id == team.id) or (m.away_goals > 0 and m.away_team_id == team.id)
+                elif k == 4: # most consecutive matches conceding
+                    criteria = (m.away_goals > 0 and m.home_team_id == team.id) or (m.home_goals > 0 and m.away_team_id == team.id)
+                elif k == 5: # most consecutive matches without winning
+                    criteria = (m.home_goals <= m.away_goals and m.home_team_id == team.id) or (m.home_goals >= m.away_goals and m.away_team_id == team.id)
+                elif k == 6: # most consecutive matches without drawing
+                    criteria = (m.home_goals != m.away_goals and m.home_team_id == team.id) or (m.home_goals != m.away_goals and m.away_team_id == team.id)
+                elif k == 7: # most consecutive matches without losing
+                    criteria = (m.home_goals >= m.away_goals and m.home_team_id == team.id) or (m.home_goals <= m.away_goals and m.away_team_id == team.id)
+                elif k == 8: # most consecutive matches without scoring
+                    criteria = (m.home_goals == 0 and m.home_team_id == team.id) or (m.away_goals == 0 and m.away_team_id == team.id)
+                elif k == 9: # most consecutive matches without conceding
+                    criteria = (m.away_goals == 0 and m.home_team_id == team.id) or (m.home_goals == 0 and m.away_team_id == team.id)
+
+                if criteria: 
+                    i += 1
+                    aux.append((
+                        m, 
+                        m.home_team.name, 
+                        f"icons/teams/{m.home_team.country}/{m.home_team.name}.png",
+                        m.away_team.name, 
+                        f"icons/teams/{m.away_team.country}/{m.away_team.name}.png",
+                    )) # necesito pasar al frontend los nombres de los equipos y la ubicación del icono del escudo
+                else:
+                    if i > data[k]["record"]:
+                        data[k]["record"] = i
+                        data[k]["matches"] = aux
+                    i = 0
+                    aux = []
     return data
