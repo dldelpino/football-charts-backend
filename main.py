@@ -1,11 +1,14 @@
 # uvicorn main:app --reload
 
+from collections import defaultdict
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlmodel import Session, select
 
 from app.app import seasons, tie_breaker, engine
 from app.models import Match, Standings, Team, League
+
+import time
 
 app = FastAPI()
 
@@ -306,36 +309,47 @@ def threshold_standings(league_name: str, matches_played: int, threshold: int):
         ).first()
         data = []
         for season in seasons:
-            points = {}
-            team_ids = session.exec(
-                select(Standings.team_id).where(Standings.league_id == league.id, Standings.season == season)
+            stats = defaultdict(lambda: [0, 0, 0, 0, 0, 0, 0, 0]) # puntos, victorias, empates, derrotas, goles a favor, goles en contra, diferencia de goles, partidos jugados
+            matches = session.exec(
+                select(Match).where(Match.league_id == league.id, Match.season == season)
             ).all()
-            for team_id in team_ids:
-                points[team_id] = 0
-                matches = session.exec(
-                    select(Match).where(Match.league_id == league.id, Match.season == season, (Match.home_team_id == team_id) | (Match.away_team_id == team_id))
-                ).all()
-                i = 0
-                while i <= min(matches_played-1, len(matches)-1):
-                    match = matches[i]
-                    if match.home_team_id == team_id:
-                        if match.home_goals > match.away_goals:
-                            points[team_id] += 3
-                        elif match.home_goals == match.away_goals:
-                            points[team_id] += 1
+            i = 0
+            while (len(stats) == 0 or any([x[7] < matches_played for x in stats.values()])) and i < len(matches): # se ejecuta hasta que todos los equipos hayan jugado al menos matches_played partidos
+                m = matches[i]
+                stats[m.home_team_id][7] += 1
+                stats[m.away_team_id][7] += 1
+                if stats[m.home_team_id][7] <= matches_played:
+                    if m.home_goals > m.away_goals:
+                        stats[m.home_team_id][0] += 3
+                        stats[m.home_team_id][1] += 1
+                    elif m.home_goals == m.away_goals:
+                        stats[m.home_team_id][0] += 1
+                        stats[m.home_team_id][2] += 1
                     else:
-                        if match.home_goals < match.away_goals:
-                            points[team_id] += 3
-                        elif match.home_goals == match.away_goals:
-                            points[team_id] += 1
-                    i += 1
+                        stats[m.home_team_id][3] += 1
+                    stats[m.home_team_id][4] += m.home_goals # goles a favor
+                    stats[m.home_team_id][5] += m.away_goals # goles en contra
+                    stats[m.home_team_id][6] += m.home_goals - m.away_goals # diferencia de goles
+                if stats[m.away_team_id][7] <= matches_played:
+                    if m.home_goals > m.away_goals:
+                        stats[m.away_team_id][3] += 1
+                    elif m.home_goals == m.away_goals:
+                        stats[m.away_team_id][0] += 1
+                        stats[m.away_team_id][2] += 1
+                    else:
+                        stats[m.away_team_id][0] += 3
+                        stats[m.away_team_id][1] += 1
+                    stats[m.away_team_id][4] += m.away_goals # goles a favor
+                    stats[m.away_team_id][5] += m.home_goals # goles en contra
+                    stats[m.away_team_id][6] += m.away_goals - m.home_goals # diferencia de goles
+                i += 1
             standings = sorted( # parámetros: objeto iterable, key (función que decide el orden), reverse)
-                points.items(), # lista de pares con los elementos del diccionario
-                key = lambda x: (x[1]), # (criterio de orden, primer criterio de desempate, segundo criterio de desempate)
+                stats.items(), # lista de pares con los elementos del diccionario
+                key = lambda x: (x[1][0]), # (criterio de orden, primer criterio de desempate, segundo criterio de desempate)
                 reverse = True
             )
-            for team_id, team_points in standings:
-                if team_points >= threshold:
+            for team_id, team_stats in standings:
+                if team_stats[0] >= threshold:
                     final_standings = session.exec(
                         select(Standings).where(Standings.league_id == league.id, Standings.season == season, Standings.team_id == team_id)
                     ).first()
@@ -347,18 +361,24 @@ def threshold_standings(league_name: str, matches_played: int, threshold: int):
                             "season": season,
                             "position": final_standings.position,
                             "team": final_standings.team.name,
-                            "ppm_mw": "%.3f" % round(team_points/matches_played, 3),
+                            "ppm_mw": "%.3f" % round(team_stats[0]/matches_played, 3),
                             "ppm": "%.3f" % round(final_standings.points/final_standings.matches_played, 3),
-                            "points_mw": team_points,
+                            "points_mw": team_stats[0],
                             "points": final_standings.points,
                             "matches_played": final_standings.matches_played,
                             "wins": final_standings.wins,
+                            "wins_mw": team_stats[1],
                             "draws": final_standings.draws,
+                            "draws_mw": team_stats[2],
                             "losses": final_standings.losses,
+                            "losses_mw": team_stats[3],
                             "goals_for": final_standings.goals_for,
+                            "goals_for_mw": team_stats[4],
                             "goals_against": final_standings.goals_against,
+                            "goals_against_mw": team_stats[5],
                             "goal_difference": final_standings.goal_difference,
-                            "logo":  f"icons/teams/{final_standings.team.country}/{final_standings.team.name}.png"
+                            "goal_difference_mw": team_stats[6],
+                            "logo": f"icons/teams/{final_standings.team.country}/{final_standings.team.name}.png"
                         })
                     else:
                         sort_by = "points"
@@ -368,15 +388,21 @@ def threshold_standings(league_name: str, matches_played: int, threshold: int):
                             "season": season,
                             "position": final_standings.position,
                             "team": final_standings.team.name,
-                            "points_mw": team_points,
+                            "points_mw": team_stats[0],
                             "points": final_standings.points,
                             "matches_played": final_standings.matches_played,
                             "wins": final_standings.wins,
+                            "wins_mw": team_stats[1],
                             "draws": final_standings.draws,
+                            "draws_mw": team_stats[2],
                             "losses": final_standings.losses,
+                            "losses_mw": team_stats[3],
                             "goals_for": final_standings.goals_for,
+                            "goals_for_mw": team_stats[4],
                             "goals_against": final_standings.goals_against,
+                            "goals_against_mw": team_stats[5],
                             "goal_difference": final_standings.goal_difference,
+                            "goal_difference_mw": team_stats[6],
                             "logo":  f"icons/teams/{final_standings.team.country}/{final_standings.team.name}.png"
                         })
     data = sorted(data, key = lambda x: (x["position"], -float(x[sort_by]), -float(x[sort_by_mw])))
@@ -473,7 +499,7 @@ def promotion_frequency(league_name: str):
     return data
 
 @app.get("/relegation-frequency")
-def relegation(league_name: str):
+def relegation_frequency(league_name: str):
     with Session(engine) as session:
         league = session.exec(
             select(League).where(League.name == league_name)

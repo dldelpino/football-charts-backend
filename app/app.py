@@ -101,7 +101,6 @@ def load_dataframe(league: str, season: str): # ejemplo: league = SP1, season = 
     df.insert(1, "Season", season)
     return df
 
-
 def head_to_head(teams: list[int], season: str): # teams es una lista con ID de equipos
     stats = {team: {"points": 0, "goal_difference": 0} for team in teams}
     with Session(engine) as session:
