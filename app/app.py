@@ -92,6 +92,43 @@ fixed_names = {
     "St Etienne": "Saint-Étienne",
 }
 
+point_adjustments = {
+    (8, "03/04"): (-1, "due to improper alignment"),
+    (32, "14/15"): (-3, "due to a transfer irregularity"),
+    (116, "09/10"): (-9, "for going into administration"),
+    (99, "23/24"): (-8, "for breaching the league's financial rules"),
+    (134, "23/24"): (-4, "for breaching the league's financial rules"),
+    (139, "05/06"): (-91, "due to the Calciopoli scandal"),
+    (142, "05/06"): (-30, "due to the Calciopoli scandal"),
+    (145, "05/06"): (-30, "due to the Calciopoli scandal"),
+    (141, "05/06"): (-30, "due to the Calciopoli scandal"),
+    (141, "06/07"): (-3, "due to the Calciopoli scandal"),
+    (142, "06/07"): (-8, "due to the Calciopoli scandal"),
+    (145, "06/07"): (-15, "due to the Calciopoli scandal"),
+    (148, "06/07"): (-11, "due to the Calciopoli scandal"),
+    (162, "06/07"): (-1, "for a payment delay"),
+    (151, "10/11"): (-3, "for unpaid taxes and wages"),
+    (140, "11/12"): (-6, "due to involvement in a match-fixing scandal"),
+    (140, "12/13"): (-2, "due to involvement in a match-fixing scandal"),
+    (161, "12/13"): (-1, "due to involvement in a match-fixing scandal"),
+    (162, "12/13"): (-6, "due to involvement in a match-fixing scandal"),
+    (157, "12/13"): (-1, "due to involvement in a match-fixing scandal"),
+    (144, "14/15"): (-7, "for unpaid wages"),
+    (154, "18/19"): (-3, "for false accounting"),
+    (139, "22/23"): (-10, "for financial irregularities"),
+    (193, "03/04"): (-3, "for financial irregularities"),
+    (233, "00/01"): (-3, "due to involvement in a fake passport scandal"),
+    (240, "00/01"): (3, "due to Saint-Étienne's involvement in a fake passport scandal"),
+    (240, "06/07"): (2, "due to Nantes' fans invading the pitch in a match that ended 0-0"),
+    (238, "06/07"): (-1, "due to their fans invading the pitch in a match that ended 0-0"),
+    (247, "12/13"): (-2, "due to incidents during a league game the previous season"),
+    (238, "13/14"): (-3, "due to improper alignment in a match against Bastia"),
+    (241, "13/14"): (3, "due to improper alignment in a match against Nantes"),
+    (245, "21/22"): (-1, "for uncontrolled crowd trouble"),
+    (236, "21/22"): (-1, "for uncontrolled crowd trouble"),
+    (244, "23/24"): (-1, "for uncontrolled crowd trouble"), 
+}
+
 def load_dataframe(league: str, season: str): # ejemplo: league = SP1, season = 2425
     url = f"https://www.football-data.co.uk/mmz4281/{season}/{league}.csv"
     df = pd.read_csv(url, usecols = ["Div", "Date", "HomeTeam", "AwayTeam", "FTHG", "FTAG"], on_bad_lines = "warn", encoding = "utf-8")
@@ -1358,12 +1395,14 @@ def set_status(s: Standings): # ver boot.js en el fronted para los identificador
                 s.status = 0
             elif s.position == 3:
                 s.status = 1
-            elif s.position in [4, 5, 18]:
+            elif s.position in [4, 5]:
                 s.status = 3
             elif s.position in [6, 7, 8, 9]:
                 s.status = 6
-            elif s.position >= 16:
+            elif s.position in [16, 17]:
                 s.status = 10
+            elif s.position == 18:
+                s.status = 12
     return s
 
 def create_leagues():
@@ -1474,6 +1513,9 @@ def create_standings():
                         stats[away_team]["points"] += 1
                         stats[home_team]["draws"] += 1
                         stats[away_team]["draws"] += 1
+                for key in stats.keys():
+                    if (key, season) in point_adjustments.keys():
+                        stats[key]["points"] += point_adjustments[(key, season)][0]
                 if league.name in ["LaLiga", "LaLiga2", "Serie A"]:
                     standings = sorted( # parámetros: objeto iterable, key (función que decide el orden), reverse)
                         stats.items(), # lista de pares con los elementos del diccionario

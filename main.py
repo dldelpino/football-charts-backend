@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlmodel import Session, select
 
-from app.app import seasons, tie_breaker, engine
+from app.app import point_adjustments, seasons, tie_breaker, engine
 from app.models import Match, Standings, Team, League
 
 import time
@@ -233,20 +233,40 @@ def season_standings(league_name: str, season: str):
         ).all()
         data = []
         for standings, team in results:
-            data.append({
-                "status": standings.status,
-                "position": standings.position,
-                "team": team.name,
-                "points": standings.points,
-                "matches_played": standings.matches_played,
-                "wins": standings.wins,
-                "draws": standings.draws,
-                "losses": standings.losses,
-                "goals_for": standings.goals_for,
-                "goals_against": standings.goals_against,
-                "goal_difference": standings.goal_difference,
-                "logo": f"icons/teams/{team.country}/{team.name}.png",
-            })
+            if (team.id, season) in point_adjustments.keys():
+                str1 = "deducted" if point_adjustments[(team.id, season)][0] < 0 else "awarded"
+                str2 = "s" if abs(point_adjustments[(team.id, season)][0]) > 1 else ""
+                message = team.name + " was " + str1 + " " + str(abs(point_adjustments[(team.id, season)][0])) + " point" + str2 + " " +  point_adjustments[(team.id, season)][1]
+                data.append({
+                    "status": standings.status,
+                    "position": standings.position,
+                    "team": team.name,
+                    "points": standings.points,
+                    "matches_played": standings.matches_played,
+                    "wins": standings.wins,
+                    "draws": standings.draws,
+                    "losses": standings.losses,
+                    "goals_for": standings.goals_for,
+                    "goals_against": standings.goals_against,
+                    "goal_difference": standings.goal_difference,
+                    "logo": f"icons/teams/{team.country}/{team.name}.png",
+                    "message": message,
+                })
+            else:
+                data.append({
+                    "status": standings.status,
+                    "position": standings.position,
+                    "team": team.name,
+                    "points": standings.points,
+                    "matches_played": standings.matches_played,
+                    "wins": standings.wins,
+                    "draws": standings.draws,
+                    "losses": standings.losses,
+                    "goals_for": standings.goals_for,
+                    "goals_against": standings.goals_against,
+                    "goal_difference": standings.goal_difference,
+                    "logo": f"icons/teams/{team.country}/{team.name}.png",
+                })
     return data
 
 @app.get("/team-trajectory")
@@ -575,10 +595,6 @@ def team_streaks(league_name: str, team_name: str):
             select(Match).where(Match.league_id == league.id, (Match.home_team_id == team.id) | (Match.away_team_id == team.id))
         ).all()
         data = []
-        # result = {
-        #     "record": 0,  
-        #     "matches": [],
-        # }
         for k in range(10):
             i = 0
             aux = []
