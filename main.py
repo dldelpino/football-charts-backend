@@ -19,6 +19,15 @@ app.add_middleware( # evita problemas cuando Quasar haga las peticiones
     allow_headers = ["*"],
 )
 
+max_positions = {
+    1: 20, # LaLiga
+    2: 22, # LaLiga2
+    3: 20, # Premier League
+    4: 20, # Serie A
+    5: 18, # Bundesliga
+    6: 20 # Ligue 1
+}
+
 ppm = ["Serie A", "Ligue 1"] # ligas en las que a veces hay que crear la columna adicional PPM
 
 #########################################################################################################################################################

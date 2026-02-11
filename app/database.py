@@ -3,7 +3,7 @@ from sqlmodel import create_engine, SQLModel
 sqlite_file_name = "database.db"
 sqlite_url = f"sqlite:///{sqlite_file_name}"
 
-engine = create_engine(sqlite_url, echo = True) # el engine es un objeto que gestiona la comunicación con la base de datos
+engine = create_engine(sqlite_url) # el engine es un objeto que gestiona la comunicación con la base de datos
 # echo = True hace que el engine imprima todos los comandos SQL que ejecuta
 
 def create_db_and_tables(): # crea el archivo database.db
